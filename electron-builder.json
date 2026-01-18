@@ -1,0 +1,16 @@
+{
+    "appId": "com.eimaam.clipshelf.app",
+    "productName": "ClipShelf",
+    "files": [
+        "out",
+        "resources"
+    ],
+    "mac": {
+        "category": "public.app-category.utilities",
+        "target": "dmg",
+        "icon": "resources/icon.png",
+        "extendInfo": {
+            "LSUIElement": "1"
+        }
+    }
+}
