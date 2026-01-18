@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    // "module": "NodeNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "outDir": "../../dist-electron"
+  },
+}
