@@ -21,7 +21,7 @@ const pinnedClipboardItemSchema = {
 }
 
 const pinnedStoreSchema = {
-    clips: {
+    pinnedClips: {
         type: "array",
         items: {
             type: "object",
@@ -37,7 +37,7 @@ const pinnedStore = new Store<IPinnedStore>({ schema: pinnedStoreSchema } as any
 
 export class PinnedClipboardStore {
     static getAllPinnedClips() {
-        return pinnedStore.get("clips") as IPinnedClipboardItem[]
+        return pinnedStore.get("pinnedClips") as IPinnedClipboardItem[]
     }
 
     static pinClip(clipId: string) {
@@ -60,13 +60,13 @@ export class PinnedClipboardStore {
         clips = [newPinnedClip, ...clips]
 
         // add the clip
-        pinnedStore.set("clips", clips)
+        pinnedStore.set("pinnedClips", clips)
     }
 
     static unpinClip(clipId: string) {
         let clips = this.getAllPinnedClips() as IPinnedClipboardItem[]
         clips = clips.filter((clip) => clip.id !== clipId)
-        pinnedStore.set("clips", clips)
+        pinnedStore.set("pinnedClips", clips)
     }
 
     /**

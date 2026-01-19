@@ -34,5 +34,5 @@ export interface IPinnedClipboardItem {
 }
 
 export interface IPinnedStore {
-    clips: IPinnedClipboardItem[]
+    pinnedClips: IPinnedClipboardItem[]
 }
