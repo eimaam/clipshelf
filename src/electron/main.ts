@@ -1,43 +1,66 @@
 import { app, BrowserWindow, clipboard } from "electron"
 import { getPreloadPath, isDev } from "./utils"
 import path from "path"
-import { menubar } from "menubar"
+import renderTray from "./tray/tray";
+import { clipboardListener } from "./clipboard/clipboard-listener";
+import { resgisterSettingsIpc } from "./ipc/settings.ipc";
+import { registerClipboardIpc } from "./ipc/clipboard.ipc";
 
-let mb: any;
 
-// main app
+const startupHandler = () => {
+
+    // hide dock icon
+    app.dock?.hide()
+
+    const appLoginSettings = app.getLoginItemSettings()
+    const launchedAtLogin = appLoginSettings.wasOpenedAtLogin
+
+    // configure app launch on startup
+    // allow adding app to mac login items (auto)
+    app.isPackaged ?
+        app.setLoginItemSettings({
+            openAtLogin: true,
+            path: app.getPath('exe'),
+            args: [],
+            openAsHidden: true
+        })
+        :
+        app.setLoginItemSettings({
+            openAtLogin: true,
+            openAsHidden: true
+        })
+
+    // add delay if app was launched at login
+    // to avoid macOS kill on the execution...
+    if (launchedAtLogin) {
+        setTimeout(() => {
+            app.dock?.hide()
+        }, 800)
+    }
+
+}
+
+// main
 app.whenReady().then(() => {
 
+    // handle events when app is starting...
+    startupHandler()
 
-    // const index = isDev() && process.env['ELECTRON_RENDERER_URL']
-    //     ? process.env['ELECTRON_RENDERER_URL']
-    //     : `file://${path.join(app.getAppPath(), '/out/renderer/index.html')}`
+    // start listening
+    clipboardListener()
 
-    // mb = menubar({
-    //     index,
-    //     icon: path.join(app.getAppPath(), '/resources/clipshelf-icon.png'),
-    //     browserWindow: {
-    //         width: 320,
-    //         height: 600,
-    //         show: false,
-    //         resizable: false,
-    //         webPreferences: {
-    //             preload: getPreloadPath(),
-    //             contextIsolation: true,
-    //             nodeIntegration: false,
-    //         }
-    //     }
-    // })
+    // render tray
+    const menubar = renderTray()
 
-    // mb.on("ready", () => {
-    //     console.log("Menubar is ready")
-    // })
+    menubar.on("ready", () => {
+        console.log("Menubar is ready")
+    })
 
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-        // show: false,
-        // resizable: false,
+        show: false,
+        resizable: false,
         webPreferences: {
             preload: getPreloadPath(),
             contextIsolation: true,
@@ -51,6 +74,10 @@ app.whenReady().then(() => {
         mainWindow.loadFile(path.join(app.getAppPath(), 'out/renderer/index.html'))
     }
 
-    
+    // register ipcs
+    resgisterSettingsIpc()
+    registerClipboardIpc()
+
+
 
 })
