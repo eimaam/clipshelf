@@ -8,7 +8,7 @@
     "mac": {
         "category": "public.app-category.utilities",
         "target": "dmg",
-        "icon": "resources/icon.png",
+        "icon": "resources/clipshelf-icon.png",
         "extendInfo": {
             "LSUIElement": "1"
         }
