@@ -1,0 +1,83 @@
+import Store from "electron-store"
+import { randomUUID } from "crypto"
+import { IClipboardItem, IClipboardStore, IPinnedClipboardItem, IPinnedStore } from "../types/clipboard.types"
+import { ClipboardStore } from "./clipboard.store"
+
+
+const pinnedClipboardItemSchema = {
+    id: {
+        type: "string",
+    },
+    content: {
+        type: "string"
+    },
+    type: {
+        type: "string",
+        enum: ["text", "image"],
+    },
+    pinnedAt: {
+        type: "number",
+    }
+}
+
+const pinnedStoreSchema = {
+    clips: {
+        type: "array",
+        items: {
+            type: "object",
+            properties: pinnedClipboardItemSchema,
+            required: ["id", "content", "type", "pinnedAt"]
+        },
+    }
+
+}
+
+
+const pinnedStore = new Store<IPinnedStore>({ schema: pinnedStoreSchema } as any)
+
+export class PinnedClipboardStore {
+    static getAllPinnedClips() {
+        return pinnedStore.get("clips") as IPinnedClipboardItem[]
+    }
+
+    static pinClip(clipId: string) {
+        const now = Date.now()
+        const clip = ClipboardStore.getClipById(clipId)
+
+        if (!clip) {
+            return
+        }
+
+        // assign defaults if missing
+        const newPinnedClip: IPinnedClipboardItem = {
+            ...clip,
+            pinnedAt: now,
+        };
+
+        let clips = this.getAllPinnedClips() as IPinnedClipboardItem[]
+
+        // insert newest clip at the start
+        clips = [newPinnedClip, ...clips]
+
+        // add the clip
+        pinnedStore.set("clips", clips)
+    }
+
+    static unpinClip(clipId: string) {
+        let clips = this.getAllPinnedClips() as IPinnedClipboardItem[]
+        clips = clips.filter((clip) => clip.id !== clipId)
+        pinnedStore.set("clips", clips)
+    }
+
+    /**
+     * calls the callback on any kinda change to the store
+     * @param callback 
+     */
+    static onChange(callback: (clips: IPinnedClipboardItem[]) => void) {
+        pinnedStore.onDidAnyChange((newValue) => {
+            callback(newValue as unknown as IPinnedClipboardItem[])
+        })
+    }
+
+}
+
