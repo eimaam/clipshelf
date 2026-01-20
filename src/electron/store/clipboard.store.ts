@@ -40,7 +40,7 @@ export class ClipboardStore {
         return clipboardStore.get("clips") as IClipboardItem[] || []
     }
 
-    static getClipById(clipId: string){
+    static getClipById(clipId: string) {
         if (!clipId || typeof clipId !== "string") return null
         const clip = this.getAllClips().find(clip => clip.id === clipId) as IClipboardItem
         return clip
@@ -83,7 +83,7 @@ export class ClipboardStore {
         // add the clip
         clipboardStore.set("clips", clips)
 
-        console.log("new clip added ==>", clip.content?.slice(0,100))
+        console.log("new clip added ==>", clip.content?.slice(0, 100))
     }
 
     static removeClip(clipId: string) {
@@ -96,9 +96,10 @@ export class ClipboardStore {
      * calls the callback on any kinda change to the store
      * @param callback 
      */
-    static onChange(callback: (clips: any[]) => void) {
-        clipboardStore.onDidAnyChange((newValue) => {
-            callback(newValue as any)
+    static onChange(callback: (clips: IClipboardItem[]) => void) {
+        return clipboardStore.onDidAnyChange((newValue) => {
+            const { clips } = newValue as IClipboardStore
+            callback(clips)
         })
     }
 

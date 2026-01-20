@@ -17,7 +17,7 @@ const renderTray = () => {
         icon: path.join(app.getAppPath(), '/resources/clipshelf-icon.png'),
         preloadWindow: true,
         browserWindow: {
-            width: 320,
+            width: 360,
             height: 600,
             show: false,
             resizable: false,
