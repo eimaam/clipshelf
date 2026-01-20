@@ -10,6 +10,17 @@ export const registerClipboardIpc = () => {
     ipcMain.handle(IPC.CLIPS_REMOVE, (_event, id: string) => {
         return ClipboardStore.removeClip(id)
     })
+    ipcMain.on(IPC.CLIPS_SUBSCRIBE, event => {
+        // unsubscribe because we don't want to keep the event open
+        const unsubscribe = ClipboardStore.onChange((clips) => {
+            // sending to the renderer process
+            event.sender.send(IPC.CLIPS_SUBSCRIBE, clips)
+        })
+        // unsubscribe when the renderer process is destroyed
+        event.sender.once("destroyed", () => {
+            unsubscribe()
+        })
+    })
 
 
 

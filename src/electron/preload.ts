@@ -1,7 +1,7 @@
 import electron from "electron"
 import { ipcRenderer } from "electron"
 import { IPC } from "../shared/ipc.channels"
-import { IClipboardSettings } from "./types/clipboard.types"
+import { IClipboardItem, IClipboardSettings } from "./types/clipboard.types"
 
 electron.contextBridge.exposeInMainWorld("clipshelf", {
     clipboard: {
@@ -16,6 +16,18 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
         },
         removeClip: (id: string) => {
             return ipcRenderer.invoke(IPC.CLIPS_REMOVE, id)
+        },
+        onClipsChange: (callback: (clips: IClipboardItem[]) => void): (() => void) => {
+            const listener = (_event: any, clips: IClipboardItem[]) => callback(clips)
+            ipcRenderer.on(IPC.CLIPS_SUBSCRIBE, listener)
+
+            // if not started already, signal the main process to send signal
+            ipcRenderer.send(IPC.CLIPS_SUBSCRIBE)
+
+            // Return a cleanup function so the renderer can stop listening
+            return () => {
+                ipcRenderer.removeListener(IPC.CLIPS_SUBSCRIBE, listener)
+            }
         }
     },
     settings: {
@@ -24,6 +36,10 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
         },
         setSettings: (key: keyof IClipboardSettings, value: IClipboardSettings[keyof IClipboardSettings]) => {
             return ipcRenderer.invoke(IPC.SETTINGS_SET, key, value)
+        },
+        // 
+        quitApp: () => {
+            return ipcRenderer.invoke(IPC.APP_QUIT)
         }
     }
 })
