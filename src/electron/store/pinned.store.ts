@@ -37,11 +37,13 @@ const pinnedStore = new Store<IPinnedStore>({ schema: pinnedStoreSchema } as any
 
 export class PinnedClipboardStore {
     static getAllPinnedClips() {
-        return pinnedStore.get("pinnedClips") as IPinnedClipboardItem[]
+        return pinnedStore.get("pinnedClips") as IPinnedClipboardItem[] || []
     }
 
     static pinClip(clipId: string) {
+        console.log("pinning a clip")
         const now = Date.now()
+        // get the clip from the clipboardStore
         const clip = ClipboardStore.getClipById(clipId)
 
         if (!clip) {
