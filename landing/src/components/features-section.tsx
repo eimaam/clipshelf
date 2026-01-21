@@ -8,12 +8,12 @@ import { FeatureCard, FeatureCardBg } from './feature-card';
 const FEATURES: { title: string; description: string; icon: LucideIcon }[] = [
     {
         title: "Speed first",
-        description: "Keyboard-driven, global shortcuts, and instant search. Optimized for professional users who value every millisecond.",
+        description: "Keyboard-driven, global shortcuts and instant search. Optimized for professional users who value every millisecond.",
         icon: Command,
     },
     {
         title: "Private & Local",
-        description: "No cloud, no tracking, no accounts. Your data never leaves your Mac. A utility that respects your sovereignty.",
+        description: "No cloud, no tracking, no accounts. Your data never leaves your Mac. A utility that respects your sovereignty!",
         icon: ShieldPlus,
     },
     {
@@ -38,7 +38,7 @@ const FEATURES: { title: string; description: string; icon: LucideIcon }[] = [
     },
     {
         title: "Lightning Fast",
-        description: "Written in Swift with native APIs. Minimal CPU and RAM footprint.",
+        description: "Written with native APIs. Minimal CPU and RAM footprint.",
         icon: Rocket,
     },
     {
