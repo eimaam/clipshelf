@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-primary: #137fec;
+  --color-secondary: #0a4d8f;
+
+  --color-background: #101922;
+  --color-foreground: #f6f7f8;
+
+  --color-surface: #161616;
+  --color-surface-hover: #222222;
+
+  /* text */
+  --color-text-primary: #f6f7f8;
+  --color-text-secondary: #A1A1A1;
+  --color-text-muted: #636363;
+
+  /* UI Accents */
+  --color-selection: rgba(255, 255, 255, 0.1);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-danger: #FF453A;
+
+  --radius-macos: 12px;
+  --shadow-macos: 0 20px 40px rgba(0, 0, 0, 0.4);
+
+  /* fonts */
+  --font-sans: "Outfit", "SF Pro Display", "Inter", system-ui, sans-serif;
+}
+
+:root {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+a {
+  font-weight: 500;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--color-secondary);
+}
+
+body {
+  margin: 0;
+  /* display: flex; */
+  /* place-items: center; */
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+
+}
