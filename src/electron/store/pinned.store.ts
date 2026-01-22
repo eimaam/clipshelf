@@ -71,6 +71,13 @@ export class PinnedClipboardStore {
         pinnedStore.set("pinnedClips", clips)
     }
 
+    // same thingy as unpinning but here to separate deleting normal clipboard item delete and a pinned
+    static deletePinned(clipId: string){
+        let clips = this.getAllPinnedClips() as IPinnedClipboardItem[]
+        clips = clips.filter((clip) => clip.id !== clipId)
+        pinnedStore.set("pinnedClips", clips)
+    }
+
     /**
      * calls the callback on any kinda change to the store
      * @param callback 

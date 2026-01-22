@@ -28,6 +28,14 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
             return () => {
                 ipcRenderer.removeListener(IPC.CLIPS_SUBSCRIBE, listener)
             }
+        },
+
+        // pinned clips
+        getAllPinnedClips: () => {
+            return ipcRenderer.invoke(IPC.CLIPS_GET_ALL_PINNED)
+        },
+        deletePinnedClip: () => {
+            return ipcRenderer.invoke(IPC.CLIPS_DELETE_PINNED)
         }
     },
     settings: {

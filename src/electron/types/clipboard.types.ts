@@ -26,10 +26,7 @@ export interface IClipboardSettings {
     globalShortcut: string; // e.g. "command+shift+c"
 }
 
-export interface IPinnedClipboardItem {
-    id: string,
-    content: string,
-    type: ClipboardContentType,
+export interface IPinnedClipboardItem extends Omit<IClipboardItem, 'createdAt'> {
     pinnedAt: number
 }
 
