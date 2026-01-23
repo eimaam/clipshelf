@@ -51,7 +51,16 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
         setSettings: (key: keyof IClipboardSettings, value: IClipboardSettings[keyof IClipboardSettings]) => {
             return ipcRenderer.invoke(IPC.SETTINGS_SET, key, value)
         },
-        
+        onSettingsChange: (callback: (settings: IClipboardSettings) => void): (() => void) => {
+            const listener = (_event: any, settings: IClipboardSettings) => callback(settings)
+            ipcRenderer.on(IPC.SETTINGS_SUBSCRIBE, listener)
+
+            ipcRenderer.send(IPC.SETTINGS_SUBSCRIBE)
+
+            return () => {
+                ipcRenderer.removeListener(IPC.SETTINGS_SUBSCRIBE, listener)
+            }
+        },
         // 
         quitApp: () => {
             return ipcRenderer.invoke(IPC.APP_QUIT)

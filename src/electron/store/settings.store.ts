@@ -5,7 +5,7 @@ import { IClipboardSettings } from "../types/clipboard.types"
 const settingStoreSchema = {
     maxClips: {
         type: "number",
-        default: 100 // mvp def
+        default: 1000 // mvp def
     },
     launchOnStartup: {
         type: "boolean",

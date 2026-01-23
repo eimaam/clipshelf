@@ -1,12 +1,18 @@
-import { IClipboardItem, IClipboardSettings } from "../electron/types/clipboard.types"
+import { IClipboardItem, IClipboardSettings, IPinnedClipboardItem } from "../electron/types/clipboard.types"
 
 export interface IClipshelfAPI {
     clipboard: {
         getAllClips: () => Promise<IClipboardItem[]>
+        removeClip: (clipId: string) => Promise<boolean>
+        deleteAllClips: () => Promise<boolean>
+        hideWindow: () => Promise<void>
+        
+        getAllPinnedClips: () => Promise<IPinnedClipboardItem[]>
         pinClip: (clipId: string) => Promise<boolean>
         unpinClip: (clipId: string) => Promise<boolean>
-        removeClip: (clipId: string) => Promise<boolean>
-        hideWindow: () => Promise<void>
+        deletePinnedClip: () => Promise<boolean>
+        deleteAllPinnedClips: () => Promise<boolean>
+        
         onClipsChange: (callback: (clips: IClipboardItem[]) => void) => (() => void)
     },
     settings: {
@@ -15,6 +21,9 @@ export interface IClipshelfAPI {
             key: K,
             value: IClipboardSettings[K]
         ) => Promise<void>
+
+        onSettingsChange: (callback: (settings: IClipboardSettings) => void) => (() => void)
+
 
         // 
         quitApp: () => Promise<void>
