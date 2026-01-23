@@ -32,6 +32,8 @@ export const ClipShelfAPI = {
     onSettingsChange: (callback: (settings: IClipboardSettings) => void) => 
     window.clipshelf.settings.onSettingsChange(callback)
   },
+
+  quitApp: () => window.clipshelf.settings.quitApp()
 }
 
 
