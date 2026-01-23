@@ -56,23 +56,7 @@ app.whenReady().then(() => {
         console.log("Menubar is ready")
     })
 
-    const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        show: false,
-        resizable: false,
-        webPreferences: {
-            preload: getPreloadPath(),
-            contextIsolation: true,
-            nodeIntegration: false,
-        }
-    })
-
-    if (isDev() && process.env['ELECTRON_RENDERER_URL']) {
-        mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-    } else {
-        mainWindow.loadFile(path.join(app.getAppPath(), 'out/renderer/index.html'))
-    }
+    
 
     // register ipcs
     resgisterSettingsIpc()
