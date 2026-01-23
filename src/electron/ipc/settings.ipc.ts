@@ -25,7 +25,7 @@ export const resgisterSettingsIpc = () => {
         })
     })
 
-    ipcMain.on(IPC.APP_QUIT, () => {
+    ipcMain.handle(IPC.APP_QUIT, () => {
         app.quit()
     })
 }

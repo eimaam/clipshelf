@@ -55,7 +55,7 @@ export class SettingsStore {
 
 
     static onChange(callback: (settings: IClipboardSettings) => void) {
-        settingStore.onDidAnyChange((newValue) => {
+        return settingStore.onDidAnyChange((newValue) => {
             callback(newValue as IClipboardSettings)
         })
     }
