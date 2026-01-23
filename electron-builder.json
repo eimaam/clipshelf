@@ -1,9 +1,12 @@
 {
     "appId": "com.eimaam.clipshelf.app",
     "productName": "ClipShelf",
+    "directories": {
+        "output": "dist"
+    },
     "files": [
-        "out",
-        "resources"
+        "out/**/*",
+        "resources/**/*"
     ],
     "mac": {
         "category": "public.app-category.utilities",

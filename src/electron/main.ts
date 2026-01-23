@@ -54,13 +54,11 @@ app.whenReady().then(() => {
 
     menubar.on("ready", () => {
         console.log("Menubar is ready")
+        
+        // register ipcs
+        resgisterSettingsIpc()
+        registerClipboardIpc()
     })
-
-    
-
-    // register ipcs
-    resgisterSettingsIpc()
-    registerClipboardIpc()
 
 
 

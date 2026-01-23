@@ -9,7 +9,7 @@ export const isDev = () => {
 export const getPreloadPath = () => {
     return path.join(
         app.getAppPath(),
-        isDev() ? "." : "..",
+        isDev() ? "." : ".",
         "/out/preload/index.cjs"
     )
 }

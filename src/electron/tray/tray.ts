@@ -15,7 +15,7 @@ const renderTray = () => {
 
     mb = menubar({
         index,
-        icon: path.join(app.getAppPath(), '/src/resources/menubarIcon.png'),
+        icon: path.join(app.getAppPath(), '/resources/menubarIcon.png'),
         preloadWindow: true,
         browserWindow: {
             width: 360,
