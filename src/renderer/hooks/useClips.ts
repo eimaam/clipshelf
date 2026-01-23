@@ -1,17 +1,21 @@
 import { useEffect, useCallback, useState } from "react"
-import { IClipboardItem } from "../../electron/types/clipboard.types"
+import { IClipboardItem, IPinnedClipboardItem } from "../../electron/types/clipboard.types"
 import { ClipShelfAPI } from "../api/clipshelf"
 
 
 export const useClipboardData = () => {
     const [clipboardItems, setClipboardItems] = useState<IClipboardItem[]>([])
+    const [pinnedClipboardItems, setPinnedClipboardItems] = useState<IPinnedClipboardItem[]>([])
     const [searchQuery, setSearchQuery] = useState<string>("")
     const [isSearching, setIsSearching] = useState<boolean>(false)
 
     const fetchClips = useCallback(async () => {
         try {
             const clips = await ClipShelfAPI.clipboard.getAllClips()
+            const pinnedItems = await ClipShelfAPI.clipboard.getAllPinnedClips()
+            console.log(`[useClips] fetchClips: ${clips?.length} clips, ${pinnedItems?.length} pinned`)
             setClipboardItems(clips || [])
+            setPinnedClipboardItems(pinnedItems || [])
         } catch (
         error
         ) {
@@ -24,6 +28,7 @@ export const useClipboardData = () => {
         fetchClips()
 
         const unsubscribe = ClipShelfAPI.clipboard.onClipsChange((clips) => {
+            console.log(`[useClips] onClipsChange: received ${clips?.length} clips`)
             setClipboardItems(clips || [])
         })
 
@@ -31,6 +36,17 @@ export const useClipboardData = () => {
             unsubscribe?.()
         }
     }, [])
+
+    const searchClips = (clips: (IClipboardItem | IPinnedClipboardItem)[], query: string): (IClipboardItem | IPinnedClipboardItem)[] => {
+        if (!query.trim()) return clips
+
+        const q = query.toLowerCase()
+
+        return clips.filter((clip) => {
+            const text = clip.content.toLowerCase();
+            return text.includes(q);
+        })
+    }
 
 
     const handlePin = async (id: string, e: React.MouseEvent) => {
@@ -54,6 +70,7 @@ export const useClipboardData = () => {
 
     return {
         clipboardItems,
+        pinnedClipboardItems,
         fetchClips,
         handlePin,
         handleUnpin,
@@ -61,7 +78,8 @@ export const useClipboardData = () => {
         searchQuery,
         setSearchQuery,
         isSearching,
-        setIsSearching
+        setIsSearching,
+        searchClips
     }
 
 }
