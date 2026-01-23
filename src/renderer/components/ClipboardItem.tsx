@@ -40,14 +40,14 @@ export function ClipboardItem({ item, isSelected, onClick, onPin, onRemove }: Cl
         <div
             onClick={onClick}
             className={cn(
-                "group relative flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 border border-transparent",
+                "group relative flex items-center gap-3 py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 border border-transparent",
                 isSelected
                     ? "bg-zinc-800/40 border-zinc-700/50"
                     : "hover:bg-zinc-900/80 border-transparent hover:border-zinc-800"
             )}
         >
             <div className={cn(
-                "w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border border-zinc-800",
+                "w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border border-zinc-800",
                 isSelected ? "bg-zinc-700/30 border-zinc-700" : "bg-zinc-900/50"
             )}>
                 {getIcon(item)}
