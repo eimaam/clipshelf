@@ -37,7 +37,9 @@ const clipboardStore = new Store<IClipboardStore>({ schema: clipboardStoreSchema
 
 export class ClipboardStore {
     static getAllClips() {
-        return clipboardStore.get("clips") as IClipboardItem[] || []
+        const clips = clipboardStore.get("clips") as IClipboardItem[] || []
+        console.log(`[Store] getAllClips returning ${clips.length} clips`)
+        return clips
     }
 
     static getClipById(clipId: string) {
@@ -83,13 +85,16 @@ export class ClipboardStore {
         // add the clip
         clipboardStore.set("clips", clips)
 
-        console.log("new clip added ==>", clip.content?.slice(0, 100))
     }
 
     static removeClip(clipId: string) {
         let clips = this.getAllClips()
         clips = clips.filter((clip) => clip.id !== clipId)
         clipboardStore.set("clips", clips)
+    }
+
+    static deleteAllClips() {
+        clipboardStore.set("clips", [])
     }
 
     /**

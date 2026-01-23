@@ -17,6 +17,9 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
         removeClip: (id: string) => {
             return ipcRenderer.invoke(IPC.CLIPS_REMOVE, id)
         },
+        deleteAll: () => {
+            return ipcRenderer.invoke(IPC.CLIPS_DELETE_ALL)
+        },
         onClipsChange: (callback: (clips: IClipboardItem[]) => void): (() => void) => {
             const listener = (_event: any, clips: IClipboardItem[]) => callback(clips)
             ipcRenderer.on(IPC.CLIPS_SUBSCRIBE, listener)
@@ -36,6 +39,9 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
         },
         deletePinnedClip: () => {
             return ipcRenderer.invoke(IPC.CLIPS_DELETE_PINNED)
+        },
+        deleteAllPinnedClips: () => {
+            return ipcRenderer.invoke(IPC.CLIPS_DELETE_ALL_PINNED)
         }
     },
     settings: {
@@ -45,6 +51,7 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
         setSettings: (key: keyof IClipboardSettings, value: IClipboardSettings[keyof IClipboardSettings]) => {
             return ipcRenderer.invoke(IPC.SETTINGS_SET, key, value)
         },
+        
         // 
         quitApp: () => {
             return ipcRenderer.invoke(IPC.APP_QUIT)

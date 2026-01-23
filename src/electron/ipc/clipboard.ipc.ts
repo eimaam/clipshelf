@@ -16,19 +16,22 @@ export const registerClipboardIpc = () => {
             // sending to the renderer process
             event.sender.send(IPC.CLIPS_SUBSCRIBE, clips)
         })
-        
+
         // unsubscribe when the renderer process is destroyed
         event.sender.once("destroyed", () => {
             unsubscribe()
         })
     })
 
-    // clipped
+    // pinned
     ipcMain.handle(IPC.CLIPS_GET_ALL_PINNED, () => {
         return PinnedClipboardStore.getAllPinnedClips()
     })
     ipcMain.handle(IPC.CLIPS_DELETE_PINNED, (_event, id: string) => {
         return PinnedClipboardStore.deletePinned(id)
+    })
+    ipcMain.handle(IPC.CLIPS_DELETE_ALL_PINNED, () => {
+        return PinnedClipboardStore.deleteAllPinned()
     })
 
 

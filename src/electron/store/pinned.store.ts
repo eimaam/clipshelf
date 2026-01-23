@@ -1,6 +1,5 @@
 import Store from "electron-store"
-import { randomUUID } from "crypto"
-import { IClipboardItem, IClipboardStore, IPinnedClipboardItem, IPinnedStore } from "../types/clipboard.types"
+import { IPinnedClipboardItem, IPinnedStore } from "../types/clipboard.types"
 import { ClipboardStore } from "./clipboard.store"
 
 
@@ -50,13 +49,20 @@ export class PinnedClipboardStore {
             return
         }
 
+        // check if already pinned
+        const pinnedClips = this.getAllPinnedClips() as IPinnedClipboardItem[]
+        if (pinnedClips.find(p => p.id === clipId)) {
+            console.log("clip already pinned")
+            return
+        }
+
         // assign defaults if missing
         const newPinnedClip: IPinnedClipboardItem = {
             ...clip,
             pinnedAt: now,
         };
 
-        let clips = this.getAllPinnedClips() as IPinnedClipboardItem[]
+        let clips = pinnedClips
 
         // insert newest clip at the start
         clips = [newPinnedClip, ...clips]
@@ -72,10 +78,14 @@ export class PinnedClipboardStore {
     }
 
     // same thingy as unpinning but here to separate deleting normal clipboard item delete and a pinned
-    static deletePinned(clipId: string){
+    static deletePinned(clipId: string) {
         let clips = this.getAllPinnedClips() as IPinnedClipboardItem[]
         clips = clips.filter((clip) => clip.id !== clipId)
         pinnedStore.set("pinnedClips", clips)
+    }
+
+    static deleteAllPinned() {
+        pinnedStore.set("pinnedClips", [])
     }
 
     /**
@@ -84,7 +94,10 @@ export class PinnedClipboardStore {
      */
     static onChange(callback: (clips: IPinnedClipboardItem[]) => void) {
         pinnedStore.onDidAnyChange((newValue) => {
-            callback(newValue as unknown as IPinnedClipboardItem[])
+            if (newValue && 'pinnedClips' in newValue) {
+
+                callback(newValue.pinnedClips as IPinnedClipboardItem[])
+            }
         })
     }
 
