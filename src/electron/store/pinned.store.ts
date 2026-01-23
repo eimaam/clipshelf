@@ -85,7 +85,7 @@ export class PinnedClipboardStore {
     }
 
     static deleteAllPinned() {
-        pinnedStore.set("pinnedClips", [])
+        pinnedStore.clear()
     }
 
     /**

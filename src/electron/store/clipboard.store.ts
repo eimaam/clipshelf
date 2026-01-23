@@ -28,6 +28,7 @@ const clipboardStoreSchema = {
             properties: clipboardItemSchema,
             required: ["id", "content", "type", "createdAt"]
         },
+        default: []
     }
 
 }
@@ -94,7 +95,7 @@ export class ClipboardStore {
     }
 
     static deleteAllClips() {
-        clipboardStore.set("clips", [])
+        clipboardStore.clear();
     }
 
     /**

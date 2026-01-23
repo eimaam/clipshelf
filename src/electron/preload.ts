@@ -8,16 +8,11 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
         getAllClips: () => {
             return ipcRenderer.invoke(IPC.CLIPS_GET_ALL)
         },
-        pinClip: (id: string) => {
-            return ipcRenderer.invoke(IPC.CLIPS_PIN, id)
-        },
-        unpinClip: (id: string) => {
-            return ipcRenderer.invoke(IPC.CLIPS_UNPIN, id)
-        },
+        
         removeClip: (id: string) => {
             return ipcRenderer.invoke(IPC.CLIPS_REMOVE, id)
         },
-        deleteAll: () => {
+        deleteAllClips: () => {
             return ipcRenderer.invoke(IPC.CLIPS_DELETE_ALL)
         },
         onClipsChange: (callback: (clips: IClipboardItem[]) => void): (() => void) => {
@@ -34,6 +29,12 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
         },
 
         // pinned clips
+        pinClip: (id: string) => {
+            return ipcRenderer.invoke(IPC.CLIPS_PIN, id)
+        },
+        unpinClip: (id: string) => {
+            return ipcRenderer.invoke(IPC.CLIPS_UNPIN, id)
+        },
         getAllPinnedClips: () => {
             return ipcRenderer.invoke(IPC.CLIPS_GET_ALL_PINNED)
         },

@@ -22,6 +22,9 @@ export const registerClipboardIpc = () => {
             unsubscribe()
         })
     })
+    ipcMain.handle(IPC.CLIPS_DELETE_ALL, () => {
+        return ClipboardStore.deleteAllClips()
+    })
 
     // pinned
     ipcMain.handle(IPC.CLIPS_GET_ALL_PINNED, () => {
@@ -33,10 +36,6 @@ export const registerClipboardIpc = () => {
     ipcMain.handle(IPC.CLIPS_DELETE_ALL_PINNED, () => {
         return PinnedClipboardStore.deleteAllPinned()
     })
-
-
-
-    // pinned clips 
     ipcMain.handle(IPC.CLIPS_PIN, (_event, id: string) => {
         return PinnedClipboardStore.pinClip(id)
     })
