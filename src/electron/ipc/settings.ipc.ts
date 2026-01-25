@@ -6,11 +6,10 @@ import { IClipboardSettings } from "../types/clipboard.types"
 
 export const resgisterSettingsIpc = () => {
     ipcMain.handle(IPC.SETTINGS_GET, () => {
-        console.log("settings ipc")
         return SettingsStore.getSettings()
     }),
     ipcMain.handle(IPC.SETTINGS_SET, (_event, key: keyof IClipboardSettings, value: IClipboardSettings[keyof IClipboardSettings]) => {
-        SettingsStore.setSetting(key, value)
+        return SettingsStore.setSetting(key, value)
     }),
 
     ipcMain.on(IPC.SETTINGS_SUBSCRIBE, event => {
@@ -23,6 +22,10 @@ export const resgisterSettingsIpc = () => {
         event.sender.once("destroyed", () => {
             unsubscribe()
         })
+    })
+
+    ipcMain.handle(IPC.SETTINGS_GET_SIZE, () => {
+        return SettingsStore.getClipboardSize()
     })
 
     ipcMain.handle(IPC.APP_QUIT, () => {

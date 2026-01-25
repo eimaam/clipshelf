@@ -1,5 +1,6 @@
 import { app } from "electron"
 import path from "path";
+import { IClipboardItem, IPinnedClipboardItem } from "./types/clipboard.types";
 
 
 export const isDev = () => {
@@ -12,4 +13,10 @@ export const getPreloadPath = () => {
         isDev() ? "." : ".",
         "/out/preload/index.cjs"
     )
+}
+
+export const getClipboardSizeInBytes = (clips: IClipboardItem[] | IPinnedClipboardItem[]) => {
+    const json = JSON.stringify(clips)
+    const size = Buffer.byteLength(json, 'utf-8')
+    return size
 }

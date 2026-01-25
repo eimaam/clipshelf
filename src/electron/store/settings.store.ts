@@ -1,11 +1,13 @@
 import Store from "electron-store"
 import { IClipboardSettings } from "../types/clipboard.types"
+import { ClipboardStore } from "./clipboard.store"
+import { PinnedClipboardStore } from "./pinned.store"
 
 
 const settingStoreSchema = {
     maxClips: {
         type: "number",
-        default: 1000 // mvp def
+        default: 5000 // mvp def
     },
     launchOnStartup: {
         type: "boolean",
@@ -51,6 +53,13 @@ export class SettingsStore {
 
     static resetSetting<K extends keyof IClipboardSettings>(key: K) {
         settingStore.reset(key)
+    }
+
+    static getClipboardSize(){
+        const clipsSize = ClipboardStore.getClipboardSize()
+        const pinnedClipsSize = PinnedClipboardStore.getClipboardSize()
+        const totalSize = Number(clipsSize + pinnedClipsSize)
+        return totalSize;
     }
 
 

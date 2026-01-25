@@ -1,18 +1,22 @@
 import { useCallback, useEffect, useState } from "react"
 import { IClipboardSettings } from "../../electron/types/clipboard.types"
 import { ClipShelfAPI } from "../api/clipshelf"
+import { formatBytes } from "../lib/utils"
 
 
 const useSettings = () => {
     const [settings, setSettings] = useState<IClipboardSettings | null>(null)
+    const [clipboardSize, setClipboardSize] = useState<number>(0)
 
     const getSettings = useCallback(async () => {
 
         try {
             const settings = await ClipShelfAPI.settings.getSettings()
+            const clipboardSize = await ClipShelfAPI.settings.getClipboardSize()
+            setClipboardSize(clipboardSize)
             setSettings(settings)
         } catch (error) {
-            console.error("There was a problem fetching settings:", settings)
+            console.error("There was a problem fetching settings:", error)
         }
 
     }, [])
@@ -36,7 +40,7 @@ const useSettings = () => {
 
     }, [])
 
-    return { settings, handleQuitApp }
+    return { settings, clipboardSize, handleQuitApp }
 }
 
 export default useSettings

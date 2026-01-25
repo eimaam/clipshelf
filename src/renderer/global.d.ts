@@ -23,8 +23,7 @@ export interface IClipshelfAPI {
         ) => Promise<void>
 
         onSettingsChange: (callback: (settings: IClipboardSettings) => void) => (() => void)
-
-
+        getClipboardSize: () => Promise<number>
         // 
         quitApp: () => Promise<void>
     }

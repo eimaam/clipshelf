@@ -1,6 +1,7 @@
 import Store from "electron-store"
 import { IPinnedClipboardItem, IPinnedStore } from "../types/clipboard.types"
 import { ClipboardStore } from "./clipboard.store"
+import { getClipboardSizeInBytes } from "../utils"
 
 
 const pinnedClipboardItemSchema = {
@@ -38,6 +39,12 @@ export class PinnedClipboardStore {
     static getAllPinnedClips() {
         return pinnedStore.get("pinnedClips") as IPinnedClipboardItem[] || []
     }
+
+    static getClipboardSize(){
+            const clips = this.getAllPinnedClips()
+            const size = getClipboardSizeInBytes(clips)
+            return size
+        }
 
     static pinClip(clipId: string) {
         console.log("pinning a clip")

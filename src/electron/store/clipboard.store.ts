@@ -2,6 +2,7 @@ import Store from "electron-store"
 import { randomUUID } from "crypto"
 import { IClipboardItem, IClipboardStore } from "../types/clipboard.types"
 import { SettingsStore } from "./settings.store"
+import { getClipboardSizeInBytes } from "../utils"
 
 
 const clipboardItemSchema = {
@@ -86,6 +87,12 @@ export class ClipboardStore {
         // add the clip
         clipboardStore.set("clips", clips)
 
+    }
+
+    static getClipboardSize(){
+        const clips = this.getAllClips()
+        const size = getClipboardSizeInBytes(clips)
+        return size
     }
 
     static removeClip(clipId: string) {

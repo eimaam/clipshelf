@@ -62,6 +62,9 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
                 ipcRenderer.removeListener(IPC.SETTINGS_SUBSCRIBE, listener)
             }
         },
+        getClipboardSize: () => {
+            return ipcRenderer.invoke(IPC.SETTINGS_GET_SIZE)
+        },
         // 
         quitApp: () => {
             return ipcRenderer.invoke(IPC.APP_QUIT)

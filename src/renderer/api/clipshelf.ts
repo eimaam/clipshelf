@@ -29,10 +29,10 @@ export const ClipShelfAPI = {
       key: K,
       value: IClipboardSettings[K]
     ) => window.clipshelf.settings.setSettings(key, value),
+    getClipboardSize: window.clipshelf.settings.getClipboardSize,
     onSettingsChange: (callback: (settings: IClipboardSettings) => void) => 
     window.clipshelf.settings.onSettingsChange(callback)
   },
-
   quitApp: () => window.clipshelf.settings.quitApp()
 }
 
