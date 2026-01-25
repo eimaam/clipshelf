@@ -17,5 +17,7 @@ export const IPC = {
   SETTINGS_SET: "settings:set",
   SETTINGS_SUBSCRIBE: "settings:subscribe",
 
+  SETTINGS_GET_SIZE: "settings:clipboard-size",
+
   APP_QUIT: "app:quit",
 } as const
