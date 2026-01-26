@@ -35,7 +35,7 @@ const clipboardStoreSchema = {
 }
 
 
-const clipboardStore = new Store<IClipboardStore>({ schema: clipboardStoreSchema } as any)
+const clipboardStore = new Store<IClipboardStore>({ name: "clipboard", schema: clipboardStoreSchema } as any)
 
 export class ClipboardStore {
     static getAllClips() {
@@ -89,7 +89,7 @@ export class ClipboardStore {
 
     }
 
-    static getClipboardSize(){
+    static getClipboardSize() {
         const clips = this.getAllClips()
         const size = getClipboardSizeInBytes(clips)
         return size

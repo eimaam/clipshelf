@@ -33,18 +33,18 @@ const pinnedStoreSchema = {
 }
 
 
-const pinnedStore = new Store<IPinnedStore>({ schema: pinnedStoreSchema } as any)
+const pinnedStore = new Store<IPinnedStore>({ name: "pinned", schema: pinnedStoreSchema } as any)
 
 export class PinnedClipboardStore {
     static getAllPinnedClips() {
         return pinnedStore.get("pinnedClips") as IPinnedClipboardItem[] || []
     }
 
-    static getClipboardSize(){
-            const clips = this.getAllPinnedClips()
-            const size = getClipboardSizeInBytes(clips)
-            return size
-        }
+    static getClipboardSize() {
+        const clips = this.getAllPinnedClips()
+        const size = getClipboardSizeInBytes(clips)
+        return size
+    }
 
     static pinClip(clipId: string) {
         console.log("pinning a clip")
