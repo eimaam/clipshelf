@@ -8,21 +8,20 @@ export const resgisterSettingsIpc = () => {
     ipcMain.handle(IPC.SETTINGS_GET, () => {
         return SettingsStore.getSettings()
     }),
-    ipcMain.handle(IPC.SETTINGS_SET, (_event, key: keyof IClipboardSettings, value: IClipboardSettings[keyof IClipboardSettings]) => {
-        return SettingsStore.setSetting(key, value)
-    }),
+        ipcMain.handle(IPC.SETTINGS_SET, (_event, key: keyof IClipboardSettings, value: IClipboardSettings[keyof IClipboardSettings]) => {
+            return SettingsStore.setSetting(key, value)
+        }),
 
-    ipcMain.on(IPC.SETTINGS_SUBSCRIBE, event => {
+        ipcMain.on(IPC.SETTINGS_SUBSCRIBE, event => {
 
-        const unsubscribe = SettingsStore.onChange((settings) => {
-            console.log(`[IPC] Sending SETTINGS UNSUBSCRIBE update. Settings: ${settings}}`)
-            event.sender.send(IPC.SETTINGS_SUBSCRIBE, settings)
-        })
+            const unsubscribe = SettingsStore.onChange((settings) => {
+                event.sender.send(IPC.SETTINGS_SUBSCRIBE, settings)
+            })
             // unsubscribe when the renderer process is destroyed
-        event.sender.once("destroyed", () => {
-            unsubscribe()
+            event.sender.once("destroyed", () => {
+                unsubscribe()
+            })
         })
-    })
 
     ipcMain.handle(IPC.SETTINGS_GET_SIZE, () => {
         return SettingsStore.getClipboardSize()

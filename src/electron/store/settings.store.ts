@@ -27,11 +27,11 @@ const settingStoreSchema = {
     }
 }
 
-const settingStore = new Store<IClipboardSettings>({ schema: settingStoreSchema } as any)
+const settingStore = new Store<IClipboardSettings>({ name: "settings", schema: settingStoreSchema } as any)
 
 
 export class SettingsStore {
-    static getSettings() :IClipboardSettings{
+    static getSettings(): IClipboardSettings {
         return settingStore.store
     }
 
@@ -44,18 +44,18 @@ export class SettingsStore {
     }
 
     static setSetting<K extends keyof IClipboardSettings>(key: K, value: IClipboardSettings[K]) {
-        settingStore.set(key, value)
+        return settingStore.set(key, value)
     }
 
     static resetSettings() {
-        settingStore.reset()
+        return settingStore.reset()
     }
 
     static resetSetting<K extends keyof IClipboardSettings>(key: K) {
-        settingStore.reset(key)
+        return settingStore.reset(key)
     }
 
-    static getClipboardSize(){
+    static getClipboardSize() {
         const clipsSize = ClipboardStore.getClipboardSize()
         const pinnedClipsSize = PinnedClipboardStore.getClipboardSize()
         const totalSize = Number(clipsSize + pinnedClipsSize)

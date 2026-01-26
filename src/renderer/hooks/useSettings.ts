@@ -40,7 +40,34 @@ const useSettings = () => {
 
     }, [])
 
-    return { settings, clipboardSize, handleQuitApp }
+    const updateSetting = async <K extends keyof IClipboardSettings>(key: K, value: IClipboardSettings[K]) => {
+        console.log({ key, value })
+        try {
+            await ClipShelfAPI.settings.setSetting(key, value)
+            // Optimistic update or wait for listener?
+            // The listener should trigger a re-render, but we can also update local state if needed faster
+            // For now rely on listener for single source of truth
+        } catch (error) {
+            console.error(`Failed to update setting ${key}:`, error)
+        }
+    }
+
+    const clearAllClips = async () => {
+        if (window.confirm("Are you sure you want to clear all clipboard history? This cannot be undone.")) {
+            try {
+                await ClipShelfAPI.clipboard.deleteAllClips()
+                // Update size immediately if possible, though listener might also handle it?
+                // Settings store listener doesn't listen to clipboard size changes directly usually,
+                // but let's re-fetch size
+                const size = await ClipShelfAPI.settings.getClipboardSize()
+                setClipboardSize(size)
+            } catch (error) {
+                console.error("Failed to clear clips:", error)
+            }
+        }
+    }
+
+    return { settings, clipboardSize, handleQuitApp, updateSetting, clearAllClips }
 }
 
 export default useSettings

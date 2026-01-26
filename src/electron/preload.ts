@@ -53,6 +53,7 @@ electron.contextBridge.exposeInMainWorld("clipshelf", {
             return ipcRenderer.invoke(IPC.SETTINGS_SET, key, value)
         },
         onSettingsChange: (callback: (settings: IClipboardSettings) => void): (() => void) => {
+            console.log("settings change triggered")
             const listener = (_event: any, settings: IClipboardSettings) => callback(settings)
             ipcRenderer.on(IPC.SETTINGS_SUBSCRIBE, listener)
 
