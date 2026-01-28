@@ -5,6 +5,7 @@ import renderTray from "./tray/tray";
 import { clipboardListener } from "./clipboard/clipboard-listener";
 import { resgisterSettingsIpc } from "./ipc/settings.ipc";
 import { registerClipboardIpc } from "./ipc/clipboard.ipc";
+import { registerGlobalShortcut, unregisterGlobalShortcuts } from "./shortcut";
 
 
 const startupHandler = () => {
@@ -54,10 +55,17 @@ app.whenReady().then(() => {
 
     menubar.on("ready", () => {
         console.log("Menubar is ready")
-        
+
         // register ipcs
         resgisterSettingsIpc()
         registerClipboardIpc()
+
+        // shortcuts
+        registerGlobalShortcut(menubar)
+    })
+
+    app.on('will-quit', () => {
+        unregisterGlobalShortcuts()
     })
 
 
